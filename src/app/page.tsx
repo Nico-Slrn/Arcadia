@@ -1,95 +1,164 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import React, { useState } from "react";
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const carouselItems = [
+    {
+      title: "Savanne",
+      description: "Habitat des grands mammifères comme les lions et les girafes.",
+      image: "/savanne.webp",
+    },
+    {
+      title: "Jungle",
+      description: "Zone humide pour les oiseaux tropicaux et les reptiles.",
+      image: "/jungle.webp",
+    },
+    {
+      title: "Désert",
+      description: "Environnement aride pour certains reptiles.",
+      image: "/désert.webp", 
+    },
+    {
+      title: "Forêt tropicale",
+      description: "Espaces ombragés pour les oiseaux et petits mammifères.",
+      image: "/foret-tropicale.webp", 
+    },
+  ];
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselItems.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + carouselItems.length) % carouselItems.length);
+  };
+
+  // Section zoo-animals
+
+  interface Animal {
+    id: number;
+    race: string;
+    name: string;
+    image: string;
+  }
+
+  interface Habitat {
+    id: number;
+    title: string; 
+    animals: Animal[];
+  }
+
+  const habitats: Habitat[] = [
+    {
+      id: 1,
+      title: "Savanne",
+      animals: [
+        {
+          id:1 ,race: "Lion", name: "Symba", image: "/lion.webp"
+        },
+        {
+          id: 2, race: "Girafe", name: "Luly", image: "/girafe.webp" 
+        },
+      ]
+    },
+    {
+      id: 2, 
+      title: "Jungle",
+      animals: [
+        {
+          id: 1 , race: "Tigre", name: "Tigrou", image : "/tigre.webp"
+        },
+        {
+          id: 2, race: "Perroquet", name: "Poukie", image: "/perroquet.webp"
+        },
+      ]
+    },
+    {
+      id: 3,
+      title: "Désert",
+      animals: [
+         {
+          id: 1, race: "Serpent", name: "Snake", image: "/serpent.webp"
+         },
+         {
+          id: 2, race: "Lézard", name: "Spike", image: "/lezard.webp" 
+         },
+      ]
+    },
+    {
+      id: 4,
+      title: "Forêt tropicale",
+      animals: [
+      {
+        id: 1, race: "Singe", name: "Jungo", image: "/singe.webp"
+      },
+      {
+        id: 2, race: "Paresseux", name:"Flash", image: "/paresseux.webp"
+      },
+    ]
+    }
+  ]
+
+  return (
+    <div className="container">
+      <div className="container-image">
+        <img src="/vue-zoo.webp" alt="Vue du Zoo" className="image-style" />
+        <div className="texte-overlay">
+          <h1>Bienvenue au Zoo Arcadia</h1>
+          <p>
+            Le Zoo Arcadia est un sanctuaire de la biodiversité, dédié à la conservation des espèces animales et à l'éducation du public. Situé dans un cadre naturel magnifique, il offre une expérience inoubliable aux visiteurs de tous âges.
+          </p>
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+
+      <div className="carousel">
+        <h2>Différents Habitats</h2>
+        <div className="carousel-slide carousel-full-width">
+          <button className="carousel-arrow left" onClick={prevSlide}>&lt;</button>
+          <img src={carouselItems[currentIndex].image} alt={carouselItems[currentIndex].title} className="carousel-image" />
+          <button className="carousel-arrow right" onClick={nextSlide}>&gt;</button>
+        </div>
+        <h3>{carouselItems[currentIndex].title}</h3>
+        <p>{carouselItems[currentIndex].description}</p>
+      </div>
+
+      <section className="zoo-animals">
+  <h2>Animaux du Zoo</h2>
+  <div className="habitat-section">
+    {habitats.map((habitat) => (
+      <div key={habitat.id} className="habitat-card">
+        <h3>{habitat.title}</h3>
+        <div className="habitat-images">
+          {habitat.animals.map((animal) => (
+            <img key={animal.id} src={animal.image} alt={animal.name} />
+          ))}
+        </div>
+        <a href={`/habitats/${habitat.id}`} className="more-info">En savoir plus</a>
+      </div>
+    ))}
+  </div>
+</section>
+
+      <section className="services">
+        <h2>Services Offerts</h2>
+        <p>Le Zoo Arcadia propose divers services pour enrichir l'expérience des visiteurs :</p>
+        <ul>
+          <li>Visites guidées</li>
+          <li>Visite du Zoo en petit train</li>
+          <li>Restauration sur place</li>
+          <li>Magasin de souvenirs</li>
+        </ul>
+      </section>
+
+      <section className="visitor-reviews">
+        <h2>Avis des Visiteurs</h2>
+        <blockquote>"Un lieu incroyable pour découvrir des animaux et en apprendre davantage sur la conservation !" — <strong>Marie D.</strong></blockquote>
+        <blockquote>"Les habitats des animaux sont magnifiques. Mes enfants ont adoré !" — <strong>Jean R.</strong></blockquote>
+        <blockquote>"Une expérience éducative et amusante, je recommande vivement !" — <strong>Sophie T.</strong></blockquote>
+      </section>
     </div>
   );
 }
