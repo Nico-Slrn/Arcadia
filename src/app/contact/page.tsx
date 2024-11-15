@@ -1,6 +1,6 @@
-export default function contact() {
+export default function Contact() {
     return  (
-    <div>
+    <div className="contact">
       <h1>Nous Contacter</h1>
       
       <h2>Avez-vous des questions ?</h2>

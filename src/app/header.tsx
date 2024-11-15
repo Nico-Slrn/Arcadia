@@ -1,10 +1,10 @@
-import Link from "next/link"
+import Link from "next/link";
 
 export default function Header() {
     return (
         <header className="header">
             <Link href="/">
-            <img src="/logo2.webp" alt="Logo du Zoo" className="logo" />
+            <img src="/logo3.jpeg" alt="Logo du Zoo" className="logo" />
             </Link>
             <nav>
                 <ul>    
