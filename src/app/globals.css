@@ -4,34 +4,32 @@
   margin: 0;
   padding: 0;
 }
-
 html, body {
   background-image: url('/fond-ecran.webp');
   background-size: cover;
-  background-position: center;
+  background-position: center center;
   width: 100%;
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
+  overflow-x: hidden;
+  box-sizing: border-box; 
 }
 
 body {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
+  flex: 1; 
   background-color: rgba(95, 111, 58, 1);
 }
 
 .container {
-  width : 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 100vh;
+  width: 100%; 
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 0 15px; 
+  flex: 1; 
+  min-height: 100vh; 
   color: white;
 }
 
@@ -257,7 +255,7 @@ body {
 }
 
 /* Mise en page pour les habitats */
-.habitat-section {
+.animal-section {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -265,7 +263,7 @@ body {
 }
 
 /* Carte d'habitat */
-.habitat-card {
+.animalt-card {
   background-color: rgba(95, 111, 58, 1);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -276,13 +274,13 @@ body {
 }
 
 /* Titre de chaque habitat */
-.habitat-card h3 {
+.animal-card h3 {
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
 
 /* Images des animaux */
-.habitat-images {
+.animal-images {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -290,7 +288,7 @@ body {
   margin-top: 10px;
 }
 
-.habitat-images img {
+.animal-images img {
   width: 80px;
   height: auto;
   border-radius: 50%; /* Forme arrondie pour les photos d'animaux */
@@ -298,7 +296,7 @@ body {
   transition: transform 0.3s;
 }
 
-.habitat-images img:hover {
+.animal-images img:hover {
   transform: scale(1.1); /* Effet de zoom au survol */
 }
 

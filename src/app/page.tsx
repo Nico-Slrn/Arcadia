@@ -1,31 +1,38 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Home() {
-  const carouselItems = [
-    {
-      title: "Savanne",
-      description: "Habitat des grands mammifères comme les lions et les girafes.",
-      image: "/savanne.webp",
-    },
-    {
-      title: "Jungle",
-      description: "Zone humide pour les oiseaux tropicaux et les reptiles.",
-      image: "/jungle.webp",
-    },
-    {
-      title: "Désert",
-      description: "Environnement aride pour certains reptiles.",
-      image: "/désert.webp",
-    },
-    {
-      title: "Forêt tropicale",
-      description: "Espaces ombragés pour les oiseaux et petits mammifères.",
-      image: "/foret-tropicale.webp",
-    },
-  ];
+
+  const [carouselItems, setCarouselItems] = useState([]);
+  const [animaux, setAnimaux] = useState([]);
+  const [service, setService] = useState([]);
+
+useEffect(() => {
+
+  async function fecthAnimal() {
+    const response = await fetch("http://localhost:3001/animal");
+    const  animaux = await response.json();
+    setAnimaux(animaux);
+  }
+
+  fecthAnimal();
+
+  async function fetchHabitat() {
+    const response = await fetch("http://localhost:3001/habitat");
+    const carouselItems = await response.json();
+    setCarouselItems(carouselItems);
+  }
+fetchHabitat()
+  
+async function fecthService() {
+  const response = await fetch("http://localhost:3001/service");
+  const  services = await response.json();
+  setService(services);
+}
+fecthService();
+})
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -37,12 +44,6 @@ export default function Home() {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + carouselItems.length) % carouselItems.length);
   };
 
-  const habitats = [
-    { id: 1, title: "Savanne", animals: [{ id: 1, race: "Lion", name: "Symba", image: "/lion.webp" }] },
-    { id: 2, title: "Jungle", animals: [{ id: 3, race: "Tigre", name: "Tigrou", image: "/tigre.webp" }] },
-    { id: 3, title: "Désert", animals: [{ id: 5, race: "Serpent", name: "Snake", image: "/serpent.webp" }] },
-    { id: 4, title: "Forêt tropicale", animals: [{ id: 7, race: "Singe", name: "Jungo", image: "/singe.webp" }] },
-  ];
 
   return (
     <div className="container">
@@ -57,7 +58,8 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="carousel">
+{ carouselItems.length > 0 ? (
+        <div className="carousel">
         <h2>Différents Habitats</h2>
         <div className="carousel-slide carousel-full-width">
           <button className="carousel-arrow left" onClick={prevSlide}>
@@ -71,31 +73,32 @@ export default function Home() {
         <h3>{carouselItems[currentIndex].title}</h3>
         <p>{carouselItems[currentIndex].description}</p>
       </div>
+) : (<></>) }
 
       <section className="zoo-animals">
         <h2>Animaux du Zoo</h2>
-        <div className="habitat-section">
-          {habitats.map((habitat) => (
-            <div key={habitat.id} className="habitat-card">
-              <h3>{habitat.title}</h3>
-              <div className="habitat-images">
-                {habitat.animals.map((animal) => (
+        <div className="animal-section">
+          {animaux.map((animal) => (
+            <div key={animal.id} className="animal-card">
+              <h3>{animal.name}</h3>
+              <div className="animal-images">
                   <img key={animal.id} src={animal.image} alt={animal.name} />
-                ))}
               </div>
-              <Link href={`/habitats/${habitat.id}`} className="more-info">En savoir plus</Link>
+              <Link href={`/animal/${animal.id}`}
+              className="more-info">En savoir plus
+              </Link>
             </div>
           ))}
         </div>
       </section>
+
       <section className="services">
         <h2>Services Offerts</h2>
         <p>Le Zoo Arcadia propose divers services pour enrichir l'expérience des visiteurs :</p>
         <ul>
-          <li>Visites guidées</li>
-          <li>Visite du Zoo en petit train</li>
-          <li>Restauration sur place</li>
-          <li>Magasin de souvenirs</li>
+        {service.map((service) =>( 
+          <li>{service.title}</li>
+        ))}
         </ul>
       </section>
 
