@@ -1,28 +1,60 @@
+"use client";
+
 import Link from "next/link";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+
+// Définition du type Habitat (spécifique à cette page uniquement)
+interface Habitat {
+  id: number;
+  name: string;
+  image: string;
+}
 
 export default function HabitatsPage() {
-  const habitats = [
-    { id: 1, title: "Savanne", description: "Découvrez les lions, girafes et autres animaux." },
-    { id: 2, title: "Jungle", description: "Habitat dense et humide pour les tigres et perroquets." },
-    { id: 3, title: "Désert", description: "Lieu aride pour les serpents et lézards." },
-    { id: 4, title: "Forêt tropicale", description: "Espace pour les singes et paresseux." },
-  ];
+  const [habitats, setHabitats] = useState<Habitat[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchHabitats() {
+      try {
+        const response = await fetch("/api/habitats");
+        if (!response.ok) throw new Error("Erreur lors de la récupération des habitats.");
+        const data: Habitat[] = await response.json();
+        setHabitats(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Une erreur inconnue.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchHabitats();
+  }, []);
+
+  if (loading) return <p>Chargement...</p>;
+  if (error) return <p>Erreur : {error}</p>;
 
   return (
-    <div>
-      <h1>Habitats du Zoo Arcadia</h1>
-      <ul>
+    <div className="habitat-list">
+      <h1>Habitats du Zoo</h1>
+      <div className="habitat-grid">
         {habitats.map((habitat) => (
-          <li key={habitat.id}>
-            <Link href={`/habitats/${habitat.id}`} className="more-info">
-              <div>
-                <h2>{habitat.title}</h2>
-                <p>{habitat.description}</p>
-              </div>
-            </Link>
-          </li>
+          <Link key={habitat.id} href={`/habitat/${habitat.id}`} className="habitat-card">
+            <div>
+              <Image
+                src={habitat.image}
+                alt={habitat.name}
+                width={300}
+                height={200}
+                className="habitat-image"
+              />
+              <h2>{habitat.name}</h2>
+            </div>
+          </Link>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
